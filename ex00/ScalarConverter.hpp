@@ -20,6 +20,11 @@ class ScalarConverter {
 		~ScalarConverter( void );
 
 		void convertInput( std::string str );
-		void printResults( void );
+		void printResults( void ) const;
+
+		char getChar( void ) const;
+		int getInt( void ) const;
+		float getFloat( void ) const;
+		double getDouble( void ) const;
 };
 #endif
