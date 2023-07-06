@@ -60,10 +60,11 @@ double ScalarConverter::getDouble( void ) const {
 }
 
 void ScalarConverter::printResults( void ) const {
-	std::cout << "Converted Values:\n"
-			<< "Char"
+
 }
 
 void ScalarConverter::convertInput( std::string str ) {
 
+	if (str.length() == 1 && (this->_char = static_cast<unsigned char>(str[0]) < 127));
+	else if ((str[0] == '-' && str.length() == 11 && _int = stoi(str) >= INT_MIN))
 }
