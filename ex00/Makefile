@@ -7,7 +7,7 @@ RM = rm -rf
 SRCS = ScalarConverter.cpp main.cpp
 INC = ScalarConverter.hpp
 
-OBJS = ${SRCS=%.cpp:%.o}
+OBJS = ${SRCS:%.cpp=%.o}
 
 %.o: %.cpp ${INC}
 		@printf "\033[38;5;121mCompiling $<...\033[0m\r"

@@ -1,5 +1,4 @@
-#include <ScalarConverter.hpp>
-
+#include "ScalarConverter.hpp"
 /* ================= CONSTRUCTOR ================== */
 ScalarConverter::ScalarConverter( void ) : _literal(NULL) {
 	_char = '\0';
@@ -7,6 +6,7 @@ ScalarConverter::ScalarConverter( void ) : _literal(NULL) {
 	_float = 0.0f;
 	_double = 0.0;
 	_dataType = setInputType(_literal);
+	convert();
 	std::cout << "Default constructor should never be called, and shouldn't be accessible. Somethings wrong."
 			<< std::endl;
 }
@@ -17,7 +17,7 @@ ScalarConverter::ScalarConverter( std::string lit ) : _literal(lit) {
 	_float = 0.0f;
 	_double = 0.0;
 	_dataType = setInputType(_literal);
-
+	convert();
 }
 
 /* ================= DESTRUCTOR ================== */
@@ -46,45 +46,32 @@ ScalarConverter &ScalarConverter::operator=( const ScalarConverter &assign ) {
 
 /* ================= PUBLIC ================== */
 
-char ScalarConverter::getChar( void ) const {
-	return (this->_char);
-}
-
-int ScalarConverter::getInt( void ) const {
-	return (this->_int);
-}
-
-float ScalarConverter::getFloat( void ) const {
-	return (this->_float);
-}
-
-double ScalarConverter::getDouble( void ) const {
-	return (this->_double);
-}
-
 int ScalarConverter::setInputType( const std::string lit ) {
 	if (!lit.compare("nan") || !lit.compare("+inf") || !lit.compare("-inf") ||
 		!lit.compare("nanf") || !lit.compare("+inff") || !lit.compare("-inff"))
 		return NAN_INF;
-	if (lit.length() == 1 && isprint(lit[0]))
-		return CHAR;
-	if (lit.find_first_of("+-") != lit.find_last_of("+-"))
+	if (lit.find_first_of("+-") != lit.find_last_of("+-") || lit.find_first_not_of("-+0123456789.ef") != std::string::npos)
 		return ERROR;
-	if (lit.find_first_of("-+") == 0 && lit.find_first_not_of("-+0123456789") == std::string::npos)
+	if ((lit.find_first_of("-+") == 0 && lit.find_first_not_of("-+0123456789") == std::string::npos) ||
+		(lit.find_first_not_of("0123456789") == std::string::npos)) {
+		long temp = std::stol(lit);
+		if (temp >= INT_MAX || temp <= INT_MIN)
+			return ERROR;
 		return INT;
-	else if (lit.find_first_not_of("0123456789") == std::string::npos)
-		return INT;
+	}
 	if (lit.find_first_of(".") != lit.find_last_of(".") || (lit.find_first_of(".") == lit.find_last_of(".") 
 		&& !isdigit(lit[lit.find_first_of(".") + 1])))
 		return ERROR;
 	if (lit.find_first_of(".") == lit.find_last_of(".")) {
 		if (!isdigit(lit[lit.find_first_of(".") + 1]))
 			return ERROR;
-		if (lit.find_first_of("f") == lit.find_last_of("f") && lit[lit.find_first_of("f") + 1] == std::string::npos)
+		if (lit.find_first_of("f") == lit.find_last_of("f") && lit[lit.find_first_of("f") + 1] == '\0')
 			return FLOAT;
 		else
 			return DOUBLE;
 	}
+	if (lit.length() == 1 && isprint(lit[0]))
+		return CHAR;
 	else
 		return ERROR;
 }
@@ -136,8 +123,41 @@ void ScalarConverter::convert( void ) {
 		default:
 			throw ScalarConverter::Exception();
 	}
+	printResults();
 }
 
 void ScalarConverter::printResults( void ) const {
-	if (this->_dataType != NAN_INF && this->_char <= UCHAR_MAX)
+	if (this->_dataType != NAN_INF && this->_char <= UCHAR_MAX && this->_char >= 0) {
+		std::cout << "char: " << (isprint(this->_char) ? "'" + std::string(1, this->_char) + "'" : "Non-displayable");
+	}
+	else
+		std::cout << "char: impossible";
+	std::cout << std::endl;
+
+	if (this->_dataType != NAN_INF && this->_int <= INT_MAX && this->_int >= INT_MIN) {
+		std::cout << "int: " << this->_int;
+	}
+	else
+		std::cout << "int: impossible";
+	std::cout << std::endl;
+
+	if (this->_dataType != NAN_INF)
+		std::cout << "float: " << _float << (this->_float - this->_int == 0 ? ".0f" : "f");
+	else if (_literal == "nan" || _literal == "nanf")
+		std::cout << "float: nanf";
+	else
+		std::cout << "float: " << (_literal[0] == '+' ? "+inff" : "-inff");
+	std::cout << std::endl;
+
+	if (this->_dataType != NAN_INF)
+		std::cout << "double: " << _double << (this->_double - this->_int == 0 ? ".0" : "");
+	else if (_literal == "nan" || _literal == "nanf")
+		std::cout << "double: nan";
+	else
+		std::cout << "double: " << (_literal[0] == '+' ? "+inf" : "-inf");
+	std::cout << std::endl;
+}
+
+const char *ScalarConverter::Exception::what( void ) const throw () {
+	return ("Conversion Error.");
 }

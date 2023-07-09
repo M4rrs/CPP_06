@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <climits>
 
 enum types {
 	CHAR,
@@ -38,11 +39,6 @@ class ScalarConverter {
 		void typeF( void );
 		void typeD( void );
 		void printResults( void ) const;
-
-		char getChar( void ) const;
-		int getInt( void ) const;
-		float getFloat( void ) const;
-		double getDouble( void ) const;
 
 		class Exception : std::exception {
 			public:
