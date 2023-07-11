@@ -50,10 +50,12 @@ int ScalarConverter::setInputType( const std::string lit ) {
 	if (!lit.compare("nan") || !lit.compare("+inf") || !lit.compare("-inf") ||
 		!lit.compare("nanf") || !lit.compare("+inff") || !lit.compare("-inff"))
 		return NAN_INF;
+	if (lit.length() == 1 && !isdigit(lit[0]) && isprint(lit[0]))
+		return CHAR;
 	if (lit.find_first_of("+-") != lit.find_last_of("+-") || lit.find_first_not_of("-+0123456789.ef") != std::string::npos)
 		return ERROR;
-	if ((lit.find_first_of("-+") == 0 && lit.find_first_not_of("-+0123456789") == std::string::npos) ||
-		(lit.find_first_not_of("0123456789") == std::string::npos)) {
+	if ((lit.find_first_of("-+") == 0 && lit.find_first_not_of("-+0123456789") == std::string::npos)
+		||(lit.find_first_not_of("0123456789") == std::string::npos)) {
 		long temp = std::stol(lit);
 		if (temp >= INT_MAX || temp <= INT_MIN)
 			return ERROR;
@@ -70,8 +72,8 @@ int ScalarConverter::setInputType( const std::string lit ) {
 		else
 			return DOUBLE;
 	}
-	if (lit.length() == 1 && isprint(lit[0]))
-		return CHAR;
+	// if (lit.length() == 1 && isprint(lit[0]))
+	// 	return CHAR;
 	else
 		return ERROR;
 }
@@ -127,7 +129,7 @@ void ScalarConverter::convert( void ) {
 }
 
 void ScalarConverter::printResults( void ) const {
-	if (this->_dataType != NAN_INF && this->_char <= UCHAR_MAX && this->_char >= 0) {
+	if (this->_dataType != NAN_INF && this->_char >= 0) {
 		std::cout << "char: " << (isprint(this->_char) ? "'" + std::string(1, this->_char) + "'" : "Non-displayable");
 	}
 	else
