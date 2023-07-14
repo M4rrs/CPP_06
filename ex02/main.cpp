@@ -6,7 +6,7 @@
 /*   By: nnorazma <nnorazma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 14:24:41 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/07/14 14:24:42 by nnorazma         ###   ########.fr       */
+/*   Updated: 2023/07/14 15:33:21 by nnorazma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int main( void ){
 	for (int i = 0; i < 5; i++) {
 		Base *temp = test1.generate();
 		test1.identify(temp);
+		test1.identify(*temp);
 		delete temp;
 		std::cout << std::endl;
 		sleep(2);

@@ -6,7 +6,7 @@
 /*   By: nnorazma <nnorazma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 14:24:30 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/07/14 14:24:31 by nnorazma         ###   ########.fr       */
+/*   Updated: 2023/07/14 15:33:10 by nnorazma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ Base *Base::generate( void ) {
 }
 
 void Base::identify( Base *p ) {
-	std::cout << "Identify: Object is type ";
+	std::cout << "Identify *: Object is type ";
 	if (dynamic_cast<A*>(p))
 		std::cout << "A" << std::endl;
 	else if (dynamic_cast<B*>(p))
@@ -51,4 +51,31 @@ void Base::identify( Base *p ) {
 be an occurence in which it is not 0 - 2 (A, B or C)*/
 void Base::identify( Base &p ) {
 
+	static int i;
+	char classes[] = {'A', 'B', 'C'};
+
+	while (i < 3) {
+		void *empty = NULL;
+		Base &temp = (Base &)empty;
+		try {
+			if (i == 0)
+				temp = dynamic_cast<A &>(p);
+			else if (i == 1)
+				temp = dynamic_cast<B &>(p);
+			else if (i == 2)
+				temp = dynamic_cast<C &>(p);
+			else
+				std::cout << "Unknown Type." << std::endl;
+			(void) temp;
+		}
+		catch (std::exception &e) {
+			i++;
+			identify(p);
+			return;
+		}
+		std::cout << "Identify &: Object is type " << classes[i]
+				<< std::endl;
+		i = 0;
+		break ;
+	}
 }
