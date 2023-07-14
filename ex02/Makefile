@@ -5,31 +5,31 @@
 #                                                     +:+ +:+         +:+      #
 #    By: nnorazma <nnorazma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/07/14 14:24:18 by nnorazma          #+#    #+#              #
-#    Updated: 2023/07/14 14:24:19 by nnorazma         ###   ########.fr        #
+#    Created: 2023/07/14 14:24:47 by nnorazma          #+#    #+#              #
+#    Updated: 2023/07/14 14:24:49 by nnorazma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Serializer
+NAME = Base
 
 CC = c++
 FLAGS = -Wall -Werror -Wextra -I -fsanitize=address
 
 RM = rm -rf
 
-SRCS = Serializer.cpp main.cpp
-INC = Serializer.hpp
+SRCS = Base.cpp main.cpp
+INC = Base.hpp
 
 OBJS = ${SRCS:%.cpp=%.o}
 
-%.o : %.cpp ${INC}
-	@printf "\033[38;5;121mCompiling $<...\033[0m\r"
+%.o: %.cpp ${INC}
+		@printf "\033[38;5;121mCompiling $<...\033[0m\r"
 		@${CC} ${FLAGS} -c $< -o $@
 
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-		@echo "\n\033[38;5;204mSerializer.\033[0m"
+		@echo "\n\033[38;5;204mBase.\033[0m"
 		@${CC} ${FLAGS} ${OBJS} -o $@
 
 clean:

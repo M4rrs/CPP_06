@@ -5,22 +5,28 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnorazma <nnorazma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/14 14:23:52 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/07/14 14:23:53 by nnorazma         ###   ########.fr       */
+/*   Created: 2023/07/14 14:24:41 by nnorazma          #+#    #+#             */
+/*   Updated: 2023/07/14 14:24:42 by nnorazma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
+#include "Classes.hpp"
+#include <unistd.h>
 
-int main( int ac, char **av ) {
-	if (ac == 2) {
-		try {
-			ScalarConverter convert(av[1]);
-		}
-		catch (ScalarConverter::Exception &e) {
-			std::cout << e.what() << std::endl;
-		}
-		return (0);
+int main( void ){
+	Base test1;
+
+	for (int i = 0; i < 5; i++) {
+		Base *temp = test1.generate();
+		test1.identify(temp);
+		delete temp;
+		std::cout << std::endl;
+		sleep(2);
 	}
-	std::cout << "Only 1 argument." << std::endl;
 }
+
+/*rand() on its own is pretty unreliable, not exactly "random"
+using time() does make it a bit more random but running it in a loop
+would somewhat give them all the same result, because program run fast, time run
+not so fast. I just used sleep to slow down processing so the results do show
+a little more randomly.*/

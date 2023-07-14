@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Base.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nnorazma <nnorazma@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/14 14:24:30 by nnorazma          #+#    #+#             */
+/*   Updated: 2023/07/14 14:24:31 by nnorazma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Base.hpp"
+#include "Classes.hpp"
 
 Base::~Base( void ) {
 	std::cout << "Base destructed." << std::endl;
@@ -10,10 +23,13 @@ Base *Base::generate( void ) {
 
 	switch (random) {
 		case 0:
+			std::cout << "Type A" << std::endl;
 			return new A;
 		case 1:
+			std::cout << "Type B" << std::endl;
 			return new B;
 		case 2:
+			std::cout << "Type C" << std::endl;
 			return new C;
 		default:
 			std::cout << "Error generating." << std::endl;
@@ -22,6 +38,7 @@ Base *Base::generate( void ) {
 }
 
 void Base::identify( Base *p ) {
+	std::cout << "Identify: Object is type ";
 	if (dynamic_cast<A*>(p))
 		std::cout << "A" << std::endl;
 	else if (dynamic_cast<B*>(p))
