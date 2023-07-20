@@ -6,7 +6,7 @@
 /*   By: nnorazma <nnorazma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/14 14:24:23 by nnorazma          #+#    #+#             */
-/*   Updated: 2023/07/14 14:24:24 by nnorazma         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:37:38 by nnorazma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ Serializer::Serializer( const Serializer &copy ) {
 }
 
 Serializer &Serializer::operator=( const Serializer &assign ) {
-	// return (this == &assign ? *this : *this);
 	(void) assign;
 	return *this;
 }
